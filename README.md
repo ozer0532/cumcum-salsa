@@ -14,22 +14,27 @@ Ikuti langkah-langkah di bawah untuk menginstall bot line di perangkat anda.
 {add bot line Cumcum Salsa.}
 
 ### Cara Order
-#### Ketik Pesan
+#### Klik Menu Pesan atau Ketik Pesan
 ```
 Insert Meme Here
 ```
 
-#### Isi Data Diri
+#### Isi Data Pesanan
 ```
 Press F to respect
 ```
 
-#### Isi Data Alamat Lengkap
+#### Isi Kelengkapan Pengiriman (Bubble Wrap dan Bank untuk Transfer)
 ```
-Insert coin to play
+Jangan lupa makan
 ```
 
-#### Apa lagi ya Gun aku lupa
+#### Konfirmasi Data Pesanan
+```
+Jangan lupa makan
+```
+
+#### Simpan Kode Pesanan untuk Melakukan Konfirmasi setelah Transfer
 ```
 Jangan lupa makan
 ```
