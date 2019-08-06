@@ -1,15 +1,16 @@
 // Dependencies
 const { LineBot, LineHandler } = require('bottender');
 const { createServer } = require('bottender/express');
+const { Line, LineClient } = require('messaging-api-line');
 
 const config = require('./bottender.config.js').line;
 
-const menuFunction = require('./menufunction.js');      // Gunakan task
+const menuFunction = require('./menufunction.js');
 const clientPushMessage = require('./clientpushmessage.js');
 const pesan = require('./pesan.js');
 const randomize = require('./randomizer.js');
 const database = require('./database.js');
-const task6 = require('./task6.js');
+const { Dictionary } = require('./dictionary.js');
 
 const replyAPI = new LineBot({
   accessToken: config.accessToken,
@@ -20,9 +21,12 @@ const pushAPI = LineClient.connect({
   channelSecret: config.channelSecret,
 });
 
+const userCodePair = new Dictionary();
+const userStepPair = new Dictionary();
+
 // Main Process
 const MainHandler = new LineHandler()
-  .onEvent(context => {
+  .onEvent(async context => {
     await context.sendText('Hello World');
   })
 

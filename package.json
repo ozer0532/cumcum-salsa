@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "bottender": "0.15.17",
+    "googleapis": "^39.2.0",
     "nodemon": "1.19.1"
   }
 }
