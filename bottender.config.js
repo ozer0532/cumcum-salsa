@@ -1,6 +1,6 @@
 module.exports = {
   line: {
-    accessToken: '__PUT_YOUR_ACCESS_TOKEN_HERE__',
-    channelSecret: '__PUT_YOUR_CHANNEL_SECRET_HERE__'
+    accessToken: 'Kvtynqx5fT/E3gq7XkAyk6BrX7i2xaARGJGN2sL+6oag9UPlwNRGDysl6frJ91VvqKXNKRDOnxITo31kAR7/6b8jFfe1htpE67tXRlJCqC+l75HfAUCVb1Khtp6iznNF5CjzEiv9+ffThFRLd/gRNgdB04t89/1O/w1cDnyilFU=',
+    channelSecret: '5279195cf70e0dc55ac54966f054b52e'
   }
 };
