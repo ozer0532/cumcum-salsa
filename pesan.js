@@ -1,7 +1,7 @@
 // Fungsi ini memroses segala pemesanan oleh pengguna, termasuk input dan output
 // Fungsi mengambil data state dari database, kemudian memproses data dan mengirimkan pesan.
 // Gunakan fungsi-fungsi tambahan dibawah untuk mempermudah pekerjaan
-async function pesan (context) {
+async function pesan (context, dataPesanan) {
 
 }
 
@@ -65,4 +65,8 @@ async function prosesKonfirmasiBenar (context) {
 
 async function prosesKonfirmasiSalah (context) {
 
+}
+
+module.exports = {
+    pesan: pesan
 }

@@ -3,7 +3,7 @@
 
 async function produk (context) {
 
-	context.reply([
+	await context.reply([
 		// Produk Greeting
 		{
   			"type": "text",
@@ -26,7 +26,7 @@ async function produk (context) {
 
 async function faq (context) {
 
-	context.reply([
+	await context.reply([
 		// FAQ Greeting
 		{
 		  "type": "text",
@@ -47,7 +47,7 @@ async function faq (context) {
 
 async function testimoni (context) {
     
-    context.reply([
+    await context.reply([
     	// Testimoni Greeting
 		{
 		  "type": "text",
@@ -66,10 +66,17 @@ async function testimoni (context) {
 async function kontak (context) {
 
 	// Kontak
-    context.reply([
+    await context.reply([
 		{
 		  "type": "text",
 		  "text": "Halo! Jika ada yang ingin ditanyakan langsung, kamu  dapat mengontak line Customer Service Cumcum Salsa dengan detil kontak:\n\nLine id : CSCumcumSalsa\nWhatsapp: 082903984891"
 		}
 	]);
+}
+
+module.exports = {
+    produk: produk,
+    faq: faq,
+    testimoni: testimoni,
+    kontak: kontak
 }

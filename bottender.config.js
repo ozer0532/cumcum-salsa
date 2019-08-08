@@ -1,6 +1,6 @@
 module.exports = {
   line: {
-    accessToken: 'Kvtynqx5fT/E3gq7XkAyk6BrX7i2xaARGJGN2sL+6oag9UPlwNRGDysl6frJ91VvqKXNKRDOnxITo31kAR7/6b8jFfe1htpE67tXRlJCqC+l75HfAUCVb1Khtp6iznNF5CjzEiv9+ffThFRLd/gRNgdB04t89/1O/w1cDnyilFU=',
-    channelSecret: '5279195cf70e0dc55ac54966f054b52e'
+    accessToken: 'WFBRNLT/R3d1XOlSCMYQw/MbZwflOirivPwRyAhl+Az/TjwoyFKxvfvOV5x+0cRI5xIxn3lVynz43W9FhE0rGlaYXrN2FqwSRqiJUYNMrjqBRK0kmnprBhDJJVoosKb3bty/HQg4W9CdL/snir2hQwdB04t89/1O/w1cDnyilFU=',
+    channelSecret: '368a06d0a882d22b546fa695f35cc614'
   }
 };

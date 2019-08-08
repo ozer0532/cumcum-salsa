@@ -18,3 +18,7 @@ async function string() {
   }
   return randoms;
 }
+
+module.exports = {
+    randomString: string
+}
