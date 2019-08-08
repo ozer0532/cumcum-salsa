@@ -2,12 +2,12 @@
 // Fungsi mengambil data state dari database, kemudian memproses data dan mengirimkan pesan.
 // Gunakan fungsi-fungsi tambahan dibawah untuk mempermudah pekerjaan
 async function pesan (context, dataPesan) {
-	if (dataPesan.nama != null) await pesanNama(context);
-	if (dataPesan.jumlah != null) await pesanNama(context);
-	if (dataPesan.alamat != null) await pesanNama(context);
-	if (dataPesan.kontak != null) await pesanNama(context);
-	if (dataPesan.wrap != null) await pesanNama(context);
-	if (dataPesan.transfer != null) await pesanNama(context);
+	if (dataPesan.nama != "") await pesanNama(context);
+	if (dataPesan.jumlah != 0) await pesanNama(context);
+	if (dataPesan.alamat != "") await pesanNama(context);
+	if (dataPesan.kontak != "") await pesanNama(context);
+	if (dataPesan.wrap != false) await pesanNama(context);
+	if (dataPesan.transfer != "") await pesanNama(context);
 }
 
 // Semua fungsi ini mengirim pesan sesuai namanya

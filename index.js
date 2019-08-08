@@ -23,13 +23,21 @@ const pushAPI = LineClient.connect({
 const adminUser = "";
 
 // Berisi data pemesanan user
-pemesanan = [];
+daftar_pesanan = [];
 
 // Main Process
 const MainHandler = new LineHandler()
   .onText(async context => {
     let userId = context.event.source.userId;
-    let dataPesan = null; // Isi dengan fungsi get pemesanan dari userId pengguna
+    let dataPesan = null;
+    for(var i = 0; i < daftar_pesanan.length; i++){
+      if(daftar_pesanan[i].userId === userId){
+        dataPesan = daftar_pesanan[i];
+      } else {
+        dataPesan = new Database(userId);
+      }
+    }
+    
     let stepPemesanan = 0; // Isi dengan properti step dari data pemesanan
     if (userId == adminUser) {
 
