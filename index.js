@@ -38,6 +38,10 @@ const MainHandler = new LineHandler()
     if (dataPesan == null){
       dataPesan = new Database(userId);
       daftar_pesanan.push(dataPesan);
+      
+      console.log("Tidak ditemukan data dengan userId: " + userId);
+      console.log("Dibuat database baru dengan:");
+      dataPesan.log();
     }
     
     let stepPemesanan = 0; // Isi dengan properti step dari data pemesanan

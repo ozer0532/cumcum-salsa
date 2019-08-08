@@ -10,6 +10,18 @@ class Database {
 		this.kontak = "";
 		this.wrap = false;
 		this.transfer = "";
+		this.total = 0;
+	}
+
+	log(){
+		console.log(this.userId);
+		console.log(this.nama);
+		console.log(this.jumlah);
+		console.log(this.alamat);
+		console.log(this.kontak);
+		console.log(this.wrap);
+		console.log(this.transfer);
+		console.log(this.total);
 	}
 }
 
