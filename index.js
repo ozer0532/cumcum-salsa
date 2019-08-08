@@ -33,9 +33,11 @@ const MainHandler = new LineHandler()
     for(var i = 0; i < daftar_pesanan.length; i++){
       if(daftar_pesanan[i].userId === userId){
         dataPesan = daftar_pesanan[i];
-      } else {
-        dataPesan = new Database(userId);
       }
+    }
+    if (dataPesan == null){
+      dataPesan = new Database(userId);
+      daftar_pesanan.push(dataPesan);
     }
     
     let stepPemesanan = 0; // Isi dengan properti step dari data pemesanan
