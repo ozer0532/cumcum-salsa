@@ -9,8 +9,7 @@ const menuFunction = require('./menufunction.js');
 const clientPushMessage = require('./clientpushmessage.js');
 const pesan = require('./pesan.js');
 const randomize = require('./randomizer.js');
-const database = require('./database.js');
-const { Dictionary } = require('./dictionary.js');
+const { Database } = require('./database.js');
 
 const replyAPI = new LineBot({
   accessToken: config.accessToken,
@@ -21,8 +20,8 @@ const pushAPI = LineClient.connect({
   channelSecret: config.channelSecret,
 });
 
-const userCodePair = new Dictionary();
-const userStepPair = new Dictionary();
+// Berisi data pemesanan user
+pemesanan = new Database();
 
 // Main Process
 const MainHandler = new LineHandler()
