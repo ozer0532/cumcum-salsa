@@ -23,13 +23,13 @@ const pushAPI = LineClient.connect({
 const adminUser = "";
 
 // Berisi data pemesanan user
-pemesanan = new Database();
+pemesanan = [];
 
 // Main Process
 const MainHandler = new LineHandler()
   .onText(async context => {
     let userId = context.event.source.userId;
-    let dataPesanan = null; // Isi dengan fungsi get pemesanan dari userId pengguna
+    let dataPesan = null; // Isi dengan fungsi get pemesanan dari userId pengguna
     let stepPemesanan = 0; // Isi dengan properti step dari data pemesanan
     if (userId == adminUser) {
 
@@ -37,7 +37,7 @@ const MainHandler = new LineHandler()
       if (stepPemesanan == 0) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
-            await pesan(context, dataPesanan);
+            await pesan(context, dataPesan);
           } else if (context.event.message.text == "Produk") {
             await produk(context);
             await context.push([menuCarousel]);
@@ -56,7 +56,7 @@ const MainHandler = new LineHandler()
           }
         }
       } else {
-        pesan(context, dataPesanan);
+        pesan(context, dataPesan);
       }
     }
   })
