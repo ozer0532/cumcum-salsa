@@ -33,25 +33,27 @@ const MainHandler = new LineHandler()
     for(var i = 0; i < daftar_pesanan.length; i++){
       if(daftar_pesanan[i].userId === userId){
         dataPesan = daftar_pesanan[i];
+        
+        console.log("Eh ketemu, ada di list ke" + i);
+        dataPesan.log();
       }
     }
     if (dataPesan == null){
       dataPesan = new Database(userId);
       daftar_pesanan.push(dataPesan);
-      
+
       console.log("Tidak ditemukan data dengan userId: " + userId);
       console.log("Dibuat database baru dengan:");
       dataPesan.log();
     }
     
-    let stepPemesanan = 0; // Isi dengan properti step dari data pemesanan
     if (userId == adminUser) {
 
     } else {
-      if (stepPemesanan == 0) {
+      if (dataPesan.step == 0) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
-            await pesan(context, dataPesan);
+            dataPesan = await pesan(context, dataPesan);
           } else if (context.event.message.text == "Produk") {
             await produk(context);
             await context.push([menuCarousel]);
@@ -70,7 +72,9 @@ const MainHandler = new LineHandler()
           }
         }
       } else {
-        pesan(context, dataPesan);
+        console.log(dataPesan.nama);
+        dataPesan.log();
+        dataPesan = pesan(context, dataPesan);
       }
     }
   })

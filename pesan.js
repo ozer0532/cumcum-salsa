@@ -1,13 +1,41 @@
 // Fungsi ini memroses segala pemesanan oleh pengguna, termasuk input dan output
 // Fungsi mengambil data state dari database, kemudian memproses data dan mengirimkan pesan.
 // Gunakan fungsi-fungsi tambahan dibawah untuk mempermudah pekerjaan
-async function pesan (context, dataPesan) {
-	if (dataPesan.nama 		== "") 		await pesanNama(context);
-	if (dataPesan.jumlah 	== 0) 		await pesanJumlah(context);
-	if (dataPesan.alamat 	== "") 		await pesanAlamat(context);
-	if (dataPesan.kontak 	== "") 		await pesanKontak(context);
-	if (dataPesan.wrap 		== false) 	await pesanWrap(context);
-	if (dataPesan.transfer 	== "") 		await pesanTransfer(context);
+
+let dataPesan;
+async function pesan (context, dp) {
+	dataPesan = dp;
+	if (dataPesan.step == 0) {
+		await pesanNama(context);
+		dataPesan.step++;
+	} else if (dataPesan.step == 1) {
+		await prosesNama(context);
+		await pesanJumlah(context);
+		dataPesan.step++;
+	} else if(dataPesan.step == 2) {
+		await prosesJumlah(context);
+		await pesanAlamat(context);
+		dataPesan.step++;
+	} else if (dataPesan.step == 3) {
+		await prosesAlamat(context);
+		await pesanKontak(context);
+		dataPesan.step++;
+	} else if (dataPesan.step == 4) {
+		await prosesKontak(context);
+		await pesanWrap(context);
+		dataPesan.step++;
+	} else if (dataPesan.step == 5) {
+		await prosesWrap(context);
+		await pesanTransfer(context);
+		dataPesan.step++;
+	} else {
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step++;
+	}
+	dataPesan.step = dataPesan.step;
+	console.log(dataPesan.step);
+	return dataPesan;
 }
 
 // Semua fungsi ini mengirim pesan sesuai namanya
@@ -18,7 +46,6 @@ async function pesanNama (context) {
 	  "text": "Siapa nama kamu?"
 	}
 	]);
-	dataPesan.nama = context.event.message.text;
 }
 
 async function pesanJumlah (context) {
@@ -28,7 +55,6 @@ async function pesanJumlah (context) {
 	  "text": "Berapa jumlah Cumcum Salsa yang kamu pesan? (dalam kotak)"
 	}
 	]);
-	dataPesan.jumlah = context.event.message.text;
 }
 
 async function pesanAlamat (context) {
@@ -38,7 +64,6 @@ async function pesanAlamat (context) {
 	  "text": "Di mana alamat kamu? Usahakan lengkap dengan RT/ RW dan kode pos ya."
 	}
 	]);
-	dataPesan.alamat = context.event.message.text;
 }
 
 async function pesanKontak (context) {
@@ -48,7 +73,6 @@ async function pesanKontak (context) {
 	  "text": "Nomor yang bisa kami hubungi untuk pesanan ini?"
 	}
 	]);
-	dataPesan.kontak = context.event.message.text;
 }
 
 async function pesanWrap (context) {
@@ -58,22 +82,19 @@ async function pesanWrap (context) {
 	  "text": "Apakah kamu mau pakai bubble wrap? (Ya/ Tidak)\nPemakaian tidak dikenakan tambahan biaya."
 	}
 	]);
-	dataPesan.wrap = context.event.message.text;
 }
 
 async function pesanTransfer (context) {
 	await context.push([
 	{
 	  "type": "text",
-	  "text": "Untuk harga total yang harus dibayarkan adalah Rp ${2*dataPesan.jumlah+8000} dengan rincian:\nCumcum Salsa x ${dataPesan.jumlah} = Rp ${dataPesan.jumlah}\nBiaya pengiriman    = Rp 8000"
+	  "text": "Untuk harga total yang harus dibayarkan adalah Rp "+ dataPesan.total +" dengan rincian:\nCumcum Salsa x "+ dataPesan.jumlah + " = Rp "+ dataPesan.total-8000 +"\nBiaya pengiriman      = Rp 8000"
 	},
 	{
 	  "type": "text",
 	  "text": "Silahkan memilih rekening untuk mentransfer biaya pesanan kamu.\n1. BCA\n2. BNI\n3. BRI"
 	}
 	]);
-	dataPesan.total = 2*dataPesan.jumlah + 8000;
-	dataPesan.transfer = context.event.message.text;
 }
 
 async function pesanKonfirmasi (context) {
@@ -86,7 +107,7 @@ async function pesanKonfirmasi (context) {
 	// rincian data:
 	{
 	  "type": "text",
-	  "text": "Nama pemesan : ${dataPesan.nama}\nJumlah pesanan : ${dataPesan.jumlah}\nAlamat tujuan : ${dataPesan.alamat}\nKontak pemesan : ${dataPesan.kontak}\nPakai bubble warp? : ${dataPesan.wrap}\nHarga total : Rp ${dataPesan.total}\nPilihan pembayaran : ${dataPesan.transfer}"
+	  "text": "Nama pemesan : "+ dataPesan.nama +"\nJumlah pesanan : "+ dataPesan.jumlah +"\nAlamat tujuan : "+ dataPesan.alamat +"\nKontak pemesan : "+ dataPesan.kontak +"\nPakai bubble warp? : "+ dataPesan.wrap +"\nHarga total : Rp "+ dataPesan.total +"\nPilihan pembayaran : "+ dataPesan.transfer
 	},
 	// konfirmasi benar/salah
 	{
@@ -98,27 +119,28 @@ async function pesanKonfirmasi (context) {
 
 // Semua fungsi yang berhubungan dengan pemrosesan input
 async function prosesNama (context) {
-
+	dataPesan.nama = context.event.message.text;
 }
 
 async function prosesJumlah (context) {
-
+	dataPesan.jumlah = context.event.message.text;
+	dataPesan.total = 35000*dataPesan.jumlah + 8000;
 }
 
 async function prosesAlamat (context) {
-
+	dataPesan.alamat = context.event.message.text;
 }
 
 async function prosesKontak (context) {
-
+	dataPesan.kontak = context.event.message.text;
 }
 
 async function prosesWrap (context) {
-
+	dataPesan.wrap = context.event.message.text;
 }
 
 async function prosesTransfer (context) {
-
+	dataPesan.transfer = context.event.message.text;
 }
 
 async function prosesKonfirmasiBenar (context) {
