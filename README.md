@@ -58,7 +58,8 @@ Buka Play Store atau App Store untuk mendownload dan menginstall aplikasi Line
 1. Pastikan ngrok sudah berjalan di port yang seharusnya (http 5000) dan webhook url bot sudah dikonfigurasi sesuai ngrok
 2. Jalankan command npm run dev pada command prompt terpisah di folder cumcum-salsa
 3. Add @118jndpb (Cumcum) / @545foyu (Cumcum2) / @112zlxni (Cumcum3) pada device Line yang ingin mencoba bot
-Bot yang di-add disesuaikan pada kapabilitas menerima pesan, jika bot pertama sudah tidak bisa mengirim dan menerima pesan karena limitasi bulanan, disarankan add bot kedua ataupun ketiga. Hal ini dapat diketahui pada console cmd saat bot berjalan.
+Bot yang di-add disesuaikan pada kapabilitas menerima pesan, jika bot pertama sudah tidak bisa mengirim dan menerima pesan karena
+limitasi bulanan, disarankan add bot kedua ataupun ketiga. Hal ini dapat diketahui pada console cmd saat bot berjalan.
 4. Jika sudah muncul Greeting Message dan Menu Carousel berarti Line Bot sudah berjalan
 ```
 
