@@ -20,7 +20,7 @@ const pushAPI = LineClient.connect({
   channelSecret: config.channelSecret,
 });
 
-const adminUser = "";
+const adminUser = "U6fed2386f03b7f753116b0874fe36c6b";
 
 // Berisi data pemesanan user
 daftar_pesanan = [];
@@ -48,6 +48,7 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
+    await context.linkRichMenu(AdminConsole);
     //kodeahsjdahd
     if (context.event.message.text == "Sedang Proses") {
       
