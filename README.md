@@ -52,7 +52,7 @@ Download dan install Line
 Buka Play Store atau App Store untuk mendownload dan menginstall aplikasi Line
 ````
 
-## Features Testing
+## Running the tests
 #### Menjalankan Line Bot
 ```
 1. Pastikan ngrok sudah berjalan di port yang seharusnya (http 5000) dan webhook url bot sudah dikonfigurasi sesuai ngrok
@@ -105,7 +105,7 @@ Untuk menjalankan Line Bot secara Live ikuti langkah di bawah ini
 4. Monitor console npm untuk status bot
 ````
 
-## Tools, Library and Reference
+## Built With
 * [Line Bot Designer](https://developers.line.biz/en/services/bot-designer/) - untuk implementasi awal
 * [Node.JS](https://nodejs.org/en/) - untuk install bottender dan compiler javascript
 * [Bottender](http://bottender.js.org/docs/GettingStarted) - platform pembuatan bot
