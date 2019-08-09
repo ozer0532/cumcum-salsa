@@ -21,7 +21,7 @@ async function produk (context) {
 		// Produk (Detail 1)
 		{
 		  "type": "text",
-		  "text": "Cumcum Salsa dengan isian rasa :\n1. Stroberi\n2. Pandan\n3. Coklat\n4..\n\nHarga Rp 35.000/ kotak"
+		  "text": "Cumcum Salsa dengan isian rasa :\n1. Stroberi\n2. Pandan\n3. Coklat\n\nHarga Rp 35.000/ kotak"
 		}
 	]);
 }
@@ -110,10 +110,10 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 				empty = false;
 				var column_json = column_json_template;
 				column_json.title = daftar_pesanan[i].nama;
-				column_json.text = daftar_pesanan[i].jumlah + "box, akan dikirim ke " + daftar_pesanan[i].alamat;
+				column_json.text = daftar_pesanan[i].jumlah + " kotak, akan dikirim ke " + daftar_pesanan[i].alamat;
 
 				var action_json = action_json_template;
-				action_json.label = "Proses " + daftar_pesanan[i].kode;
+				action_json.label = "Proses";
 				action_json.text = "Proses " + daftar_pesanan[i].kode;
 				
 				column_json.actions.push(action_json);
@@ -126,10 +126,10 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 				empty = false;
 				var column_json = column_json_template;
 				column_json.title = daftar_pesanan[i].nama;
-				column_json.text = daftar_pesanan[i].jumlah + "box, akan dikirim ke " + daftar_pesanan[i].alamat;
+				column_json.text = daftar_pesanan[i].jumlah + " kotak, akan dikirim ke " + daftar_pesanan[i].alamat;
 
 				var action_json = action_json_template;
-				action_json.label = "Kirim " + daftar_pesanan[i].kode;
+				action_json.label = "Kirim";
 				action_json.text = "Kirim " + daftar_pesanan[i].kode;
 
 				column_json.actions.push(action_json);
@@ -142,7 +142,7 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 				empty = false;
 				var column_json = column_json_template;
 				column_json.title = daftar_pesanan[i].nama;
-				column_json.text = daftar_pesanan[i].jumlah + "box, sedang dikirim ke " + daftar_pesanan[i].alamat;
+				column_json.text = daftar_pesanan[i].jumlah + " kotak, sedang dikirim ke " + daftar_pesanan[i].alamat;
 
 				var action_json = action_json_template;
 				column_json.actions.push(action_json);
@@ -205,9 +205,35 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 	      dataPesan.status = 2;
 	    } else {
 			final_json = {
-				"type": "text",
-				"text": "Silakan pilih menu di bawah, atau ketik:\n - Belum Proses\n - Sedang Proses\n - Sedang Kirim\nuntuk melihat data pemesan."
-			}
+				"type": "template",
+				"altText": "this is a carousel template",
+				"template": {
+				  "type": "carousel",
+				  "actions": [],
+				  "columns": [
+					{
+					  "text": "Cek Daftar Pesanan",
+					  "actions": [
+						{
+						  "type": "message",
+						  "label": "Belum Proses",
+						  "text": "Belum Proses"
+						},
+						{
+						  "type": "message",
+						  "label": "Sedang Proses",
+						  "text": "Sedang Proses"
+						},
+						{
+						  "type": "message",
+						  "label": "Sedang Kirim",
+						  "text": "Sedang Kirim"
+						}
+					  ]
+					}
+				  ]
+				}
+			  }
 		}
 	}
 

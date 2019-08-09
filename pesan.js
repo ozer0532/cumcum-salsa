@@ -4,7 +4,7 @@
 
 const { randomString } = require('./randomizer.js');
 const { sudahFixed, sedangPacking, sedangPengiriman } = require('./clientpushmessage.js');
-const adminUser = "U589dac6e60813ce79d7f4bb0c94302be";
+const adminUser = "U6fed2386f03b7f753116b0874fe36c6b";
 
 let dataPesan;
 async function pesan (context, dp, pushAPI) {
@@ -117,7 +117,7 @@ async function pesanJumlah (context) {
 	await context.push([
 	{
 	  "type": "text",
-	  "text": "Berapa jumlah Cumcum Salsa yang kamu pesan? (dalam kotak)"
+	  "text": "Berapa kotak Cumcum Salsa yang kamu pesan? (Rp 35.000/kotak)"
 	}
 	]);
 }

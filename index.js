@@ -21,7 +21,7 @@ const pushAPI = LineClient.connect({
 });
 
 const fs = require('fs');
-const adminUser = "U589dac6e60813ce79d7f4bb0c94302be";
+const adminUser = "U6fed2386f03b7f753116b0874fe36c6b";
 
 // Berisi data pemesanan user
 daftar_pesanan = [];
@@ -53,8 +53,7 @@ const MainHandler = new LineHandler()
     await menuadmin(context, daftar_pesanan, pushAPI);
     
     } else {
-      console.log(userId);
-      if (dataPesan.step == 0) {
+      if (dataPesan.step == 0 || dataPesan.step == 6) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
             dataPesan = await pesan(context, dataPesan, pushAPI);
