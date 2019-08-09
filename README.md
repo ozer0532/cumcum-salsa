@@ -2,7 +2,7 @@
 Bot line cumcum salsa akan memudahkan proses order cumcum salsa secara online melalui platform chatting Line
 
 ## Getting Started
-Ikuti langkah-langkah di bawah untuk menginstall bot line di perangkat anda.
+Ikuti langkah-langkah di bawah untuk menjalankan Line Bot di perangkat anda.
 
 ### Prerequisites
 #### Windows/Mac/Linux
