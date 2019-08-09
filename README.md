@@ -52,7 +52,7 @@ Download dan install Line
 Buka Play Store atau App Store untuk mendownload dan menginstall aplikasi Line
 ````
 
-### Features Testing
+## Features Testing
 #### Menjalankan Line Bot
 ```
 1. Pastikan ngrok sudah berjalan di port yang seharusnya (http 5000) dan webhook url bot sudah dikonfigurasi sesuai ngrok
@@ -95,6 +95,15 @@ Pilih menu Testimoni pada Menu Carousel
 ```
 Pilih menu Kontak pada Menu Carousel
 ```
+
+## Deployment
+Untuk menjalankan Line Bot secara Live ikuti langkah di bawah ini
+````
+1. Pastikan ngrok sudah berjalan di port yang seharusnya (http 5000) dan webhook url bot sudah dikonfigurasi sesuai ngrok
+2. Jalankan command npm run dev pada command prompt terpisah di folder cumcum-salsa\
+3. Sebarkan Line ID dari Bot Line Cumcum Salsa {@118jndpb (Cumcum) / @545foyu (Cumcum2) / @112zlxni (Cumcum3)}
+4. Monitor console npm untuk status bot
+````
 
 ## Tools, Library and Reference
 * [Line Bot Designer](https://developers.line.biz/en/services/bot-designer/) - untuk implementasi awal
