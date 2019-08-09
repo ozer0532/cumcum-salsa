@@ -21,10 +21,35 @@ Setelah install, jangan lupa untuk meng-clone repository git ke local storage
 Install Line pada perangkat yang ingin mencoba Line Bot
 ````
 
+### Installing
+#### Windows/Mac/Linux
+Install Line Bot Designer
+````
+run LINE Bot Designer Setup 1.2.0.exe
+````
+Install Node.JS
+````
+run node-v10.16.1-x64.msi
+````
+Install Bottender
+````
+run command npm install -g bottender
+````
+Install ngrok
+````
+unzip ngrok.zip and taruh di folder bot
+*langkah ini bisa dilewatkan karena ngrok sudah disediakan pada repository
+````
+Install Github Desktop / Git Bash
+````
+1. run GitHubDesktopSetup.exe or Git-2.22.0-64-bit.exe
+2. clone repository ini ke local storage
+````
+
 ### Features Testing
 #### Menjalankan Line Bot
 ```
-1. Pastikan ngrok sudah berjalan di port yang seharusnya (5000) dan webhook url bot sudah dikonfigurasi sesuai ngrok
+1. Pastikan ngrok sudah berjalan di port yang seharusnya (http 5000) dan webhook url bot sudah dikonfigurasi sesuai ngrok
 2. Jalankan command npm run dev pada command prompt terpisah di folder cumcum-salsa
 3. Add @118jndpb pada device Line yang ingin mencoba bot
 4. Jika sudah muncul Greeting Message dan Menu Carousel berarti Line Bot sudah berjalan
