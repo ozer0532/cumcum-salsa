@@ -12,6 +12,9 @@ class Database {
 		this.transfer = "";
 		this.total = 0;
 		this.step = 0;
+		this.kode = "";
+		this.status = 0;
+		this.noresi = "";
 	}
 
 	log(){

@@ -3,7 +3,7 @@
 async function sudahFixed (dataPesan) {
 await pushAPI.push(userID, [{
     "type": "text",
-    "text": "[FIXED]\nNama pemesan : " + dataPesan.nama + "\nJumlah pesanan : " + dataPesan.jumlah + "\nAlamat tujuan : " + dataPesan.alamat + "\nKontak pemesan : " + dataPesan.kontak + "\nPakai bubble wrap? : " + dataPesan.bubble + "\nHarga total : Rp " + dataPesan.hargaTotal + "\nPilihan pembayaran : " + dataPesan.pilihanPembayaran + "\nNomor pesanan : " + dataPesan.nomorPesanan
+    "text": "[FIXED]\nNama pemesan : " + dataPesan.nama + "\nJumlah pesanan : " + dataPesan.jumlah + "\nAlamat tujuan : " + dataPesan.alamat + "\nKontak pemesan : " + dataPesan.kontak + "\nPakai bubble wrap? : " + dataPesan.wrap + "\nHarga total : Rp " + dataPesan.total + "\nPilihan pembayaran : " + dataPesan.transfer + "\nNomor pesanan : " + dataPesan.kode
   }])
 }
 
