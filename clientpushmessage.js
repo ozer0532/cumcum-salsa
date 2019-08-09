@@ -3,7 +3,7 @@
 async function sudahFixed (dataPesan) {
 await pushAPI.push(userID, [{
     "type": "text",
-    "text": "[FIXED]\nNama pemesan : " + dataPesan.nama + "\nJumlah pesanan : " + dataPesan.jumlah + "\nAlamat tujuan : " + dataPesan.alamat + "\nKontak pemesan : " + dataPesan.kontak + "\nPakai bubble wrap? : " + dataPesan.bubble + "\nHarga total : Rp " + dataPesan.hargaTotal + "\nPilihan pembayaran : " + dataPesan.pilihanPembayaran + "\nNomor pesanan : " + dataPesan.nomorPesanan
+    "text": "[FIXED]\nNama pemesan : " + dataPesan.nama + "\nJumlah pesanan : " + dataPesan.jumlah + "\nAlamat tujuan : " + dataPesan.alamat + "\nKontak pemesan : " + dataPesan.kontak + "\nPakai bubble wrap? : " + dataPesan.wrap + "\nHarga total : Rp " + dataPesan.total + "\nPilihan pembayaran : " + dataPesan.transfer + "\nNomor pesanan : " + dataPesan.kode
   }])
 }
 
@@ -17,7 +17,7 @@ await pushAPI.push(userID, [{
 async function sedangPengiriman (pushAPI, userID, dataPesan) {
 await pushAPI.push(userID, [{
     "type": "text",
-    "text": "Halo " + dataPesan.nama + "!\nPesanan kamu sedang dalam pengiriman.\nTerima kasih banyak telah membeli produk Cumcum Salsa."
+    "text": "Halo " + dataPesan.nama + "!\nPesanan kamu sedang dalam pengiriman.\nNomor resi pengiriman pesanan kamu adalah" + dataPesan.noresi +"\nTerima kasih banyak telah membeli produk Cumcum Salsa."
   }])
 }
 

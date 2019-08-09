@@ -20,7 +20,7 @@ const pushAPI = LineClient.connect({
   channelSecret: config.channelSecret,
 });
 
-const adminUser = "";
+const adminUser = "U589dac6e60813ce79d7f4bb0c94302be";
 
 // Berisi data pemesanan user
 daftar_pesanan = [];
@@ -50,6 +50,7 @@ const MainHandler = new LineHandler()
     if (userId == adminUser) {
       await menuadmin(context, daftar_pesanan);
     } else {
+      console.log(userId);
       if (dataPesan.step == 0) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
@@ -68,7 +69,8 @@ const MainHandler = new LineHandler()
             await context.push([menuCarousel]);
           } else {
             // Invalid command message
-            console.log(context.event.message.text);
+            await context.sendText("Terima kasih telah menggunakan Line bot ini. Saat ini kami tidak dapat memproses perintah tersebut. Silahkan memilih salah satu perintah dibawah ini!");
+            await context.push([menuCarousel]);
           }
         }
       } else {
@@ -90,6 +92,10 @@ const MainHandler = new LineHandler()
   .onJoin(async context => {
     await context.sendText('Terima kasih telah menggunakan Line Bot Cumcum Salsa. Untuk saat ini, bot ini tidak dapat digunakan pada grup ataupun di multi-person chat. Bot ini akan meninggalkan grup/chat ini');
     await context.leave();
+  })
+  .onEvent(async context => {
+    await context.sendText("Terima kasih telah menggunakan Line bot ini. Saat ini kami tidak dapat memproses pesan tersebut. Silahkan memilih salah satu perintah dibawah ini!");
+    await context.push([menuCarousel]);
   })
 
 // Daftar pesan yang dapat dikirim

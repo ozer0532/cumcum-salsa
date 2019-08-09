@@ -28,13 +28,78 @@ async function pesan (context, dp) {
 		await prosesWrap(context);
 		await pesanTransfer(context);
 		dataPesan.step++;
+	} else if (dataPesan.step == 7) {
+		if (context.event.message.text == "Benar") {
+			await context.push([
+				{
+					"type": "text",
+					"text": "Terima kasih telah menggunakan Line Bot Cumcum Salsa!\nDatang kembali!"
+				}
+			])
+			dataPesan.step = 0;
+		} else if (context.event.message.text == "Salah") {
+			await pesanRubah(context);
+			dataPesan.step++;
+		} else {
+			await context.sendText('Silahkan menjawab dengan "Benar" atau "Salah"')
+		}
+	} else if (dataPesan.step == 8) {
+		if (context.event.message.text == "Nama") {
+			await pesanNama(context);
+			dataPesan.step = 10;
+		} else if (context.event.message.text == "Jumlah") {
+			await pesanJumlah(context);
+			dataPesan.step = 11;
+		} else if (context.event.message.text == "Alamat") {
+			await pesanAlamat(context);
+			dataPesan.step = 12;
+		} else if (context.event.message.text == "Kontak") {
+			await pesanKontak(context);
+			dataPesan.step = 13;
+		} else if (context.event.message.text == "Wrap") {
+			await pesanWrap(context);
+			dataPesan.step = 14;
+		} else if (context.event.message.text == "Transfer") {
+			await pesanTransfer(context);
+			dataPesan.step = 15;
+		} else {
+			await context.sendText('Silahkan menjawab dengan "Nama", "Jumlah", "Alamat", "Kontak", "Wrap", atau "Transfer"');
+		}
+	} else if (dataPesan.step == 10) {
+		await prosesNama(context);
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step = 7;
+	} else if (dataPesan.step == 11) {
+		await prosesJumlah(context);
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step = 7;
+	} else if (dataPesan.step == 12) {
+		await prosesAlamat(context);
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step = 7;
+	} else if (dataPesan.step == 13) {
+		await prosesKontak(context);
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step = 7;
+	} else if (dataPesan.step == 14) {
+		await prosesWrap(context);
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step = 7;
+	} else if (dataPesan.step == 15) {
+		await prosesTransfer(context);
+		await prosesTransfer(context);
+		await pesanKonfirmasi(context);
+		dataPesan.step = 7;
 	} else {
 		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step++;
 	}
-	dataPesan.step = dataPesan.step;
-	console.log(dataPesan.step);
 	return dataPesan;
 }
 
@@ -88,7 +153,7 @@ async function pesanTransfer (context) {
 	await context.push([
 	{
 	  "type": "text",
-	  "text": "Untuk harga total yang harus dibayarkan adalah Rp "+ dataPesan.total +" dengan rincian:\nCumcum Salsa x "+ dataPesan.jumlah + " = Rp "+ dataPesan.total-8000 +"\nBiaya pengiriman      = Rp 8000"
+	  "text": "Untuk harga total yang harus dibayarkan adalah Rp "+ dataPesan.total +" dengan rincian:\nCumcum Salsa x "+ dataPesan.jumlah + " = Rp "+ (dataPesan.total-8000) +"\nBiaya pengiriman      = Rp 8000"
 	},
 	{
 	  "type": "text",
@@ -111,9 +176,92 @@ async function pesanKonfirmasi (context) {
 	},
 	// konfirmasi benar/salah
 	{
-	  "type": "text",
-	  "text": "Terima kasih telah mengisi data pesanan kamu.\nBerikut rincian pesanan kamu.\nSilahkan pastikan data pesanan kamu sudah benar."
+		"type": "template",
+		"altText": "Apakah data di atas sudah benar? (Benar/Salah)",
+		"template": {
+			"type": "buttons",
+			"actions": [
+			{
+				"type": "message",
+				"label": "Benar",
+				"text": "Benar"
+			},
+			{
+				"type": "message",
+				"label": "Salah",
+				"text": "Salah"
+			}
+			],
+			"title": "Apakah data di atas sudah benar?",
+			"text": "Pencet \"Salah\" untuk merubah data"
+		}
 	}
+	]);
+}
+
+async function pesanBatal (context) {
+	await context.push([
+		{
+			"type": "text",
+			"text": "Pesanan kamu telah dibatalkan."
+		}
+	]);
+}
+
+async function pesanRubah (context) {
+	await context.push([
+		{
+			"type": "template",
+			"altText": "Pilih salah satu bagian di bawah ini(Nama/Jumlah/Alamat)",
+			"template": {
+			  "type": "buttons",
+			  "actions": [
+				{
+				  "type": "message",
+				  "label": "Nama",
+				  "text": "Nama"
+				},
+				{
+				  "type": "message",
+				  "label": "Jumlah",
+				  "text": "Jumlah"
+				},
+				{
+				  "type": "message",
+				  "label": "Alamat",
+				  "text": "Alamat"
+				}
+			  ],
+			  "title": "Bagian mana yang ingin kamu rubah?",
+			  "text": "Pilih salah satu bagian di bawah ini"
+			}
+		  },
+		  {
+			"type": "template",
+			"altText": "Pilih salah satu bagian di bawah ini(Kontak/Wrap/Transfer)",
+			"template": {
+			  "type": "buttons",
+			  "actions": [
+				{
+				  "type": "message",
+				  "label": "Kontak",
+				  "text": "Kontak"
+				},
+				{
+				  "type": "message",
+				  "label": "Bubble Wrap",
+				  "text": "Wrap"
+				},
+				{
+				  "type": "message",
+				  "label": "Pilihan Pembayaran",
+				  "text": "Transfer"
+				}
+			  ],
+			  "title": "Bagian mana yang ingin kamu rubah?",
+			  "text": "Pilih salah satu bagian di bawah ini"
+			}
+		  }
 	]);
 }
 
