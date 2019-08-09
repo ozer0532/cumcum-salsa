@@ -74,6 +74,137 @@ async function kontak (context) {
 	]);
 }
 
+async function menuadmin (context, daftar_pesanan) {
+	await context.linkRichMenu("AdminConsole");
+		
+	var action_json =
+	{
+      "type": "message",
+      "label": "Action 1",
+      "text": "Action 1"
+    }
+    var column_json = 
+    {
+      "title": "Title",
+	  "text": "Text",
+	  "actions": []
+    }
+	var final_json =
+	{
+	  "type": "template",
+	  "altText": "this is a carousel template",
+	  "template": {
+	    "type": "carousel",
+	    "actions": [],
+	    "columns": []
+	  }
+	}
+
+	if (context.event.message.text == "Belum Proses") {
+		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
+			if (daftar_pesanan[i].status == 0){
+				column_json.title = dataPesan[i].nama;
+				column_json.text = dataPesan[i].jumlah + "box, akan dikirim ke " + dataPesan[i].alamat;
+				action_json.label = "Proses " + dataPesan[i].kode;
+				action_json.text = "Proses " + dataPesan[i].kode;
+				column_json.actions.push(action_json);
+				final_json.columns.push(column_json);
+			}
+		}
+	} else if (context.event.message.text == "Sedang Proses") {
+		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
+			if (daftar_pesanan[i].status == 1){
+				column_json.title = dataPesan[i].nama;
+				column_json.text = dataPesan[i].jumlah + "box, akan dikirim ke " + dataPesan[i].alamat;
+				action_json.label = "Kirim " + dataPesan[i].kode;
+				action_json.text = "Kirim " + dataPesan[i].kode;
+				column_json.actions.push(action_json);
+				final_json.columns.push(column_json);
+			}
+		}
+	} else if (context.event.message.text == "Sedang Kirim") {
+		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
+			if (daftar_pesanan[i].status == 2){
+				column_json.title = dataPesan[i].nama;
+				column_json.text = dataPesan[i].jumlah + "box, sedang dikirim ke " + dataPesan[i].alamat;
+				column_json.actions.push(action_json);
+				final_json.columns.push(column_json);
+			}
+		}
+	} else {
+		let command = context.event.message.text.split(" ");
+	    if (command[0] == "Proses"){
+	      for(var i = 0; i < daftar_pesanan.length; i++){
+	        if(daftar_pesanan[i].kode === command[1]){
+	          dataPesan = daftar_pesanan[i];
+	          
+	          console.log("Berhasil Proses. Detil Pesanan:");
+	          dataPesan.log();
+
+	          final_json = {
+			    "type": "text",
+			    "text": "Berhasil Proses."
+			  }
+	        }
+	      }
+	      sedangPacking (pushAPI, dataPesan.userId, dataPesan);
+	      dataPesan.status = 1;
+	    } else if (command[0] == "Kirim"){
+	      for(var i = 0; i < daftar_pesanan.length; i++){
+	        if(daftar_pesanan[i].kode === command[1]){
+	          dataPesan = daftar_pesanan[i];
+	          
+	          console.log("Berhasil kirim. Detil Pesanan:");
+	          dataPesan.log();
+
+	          final_json = {
+			    "type": "text",
+			    "text": "Berhasil Kirim."
+			  }
+	        }
+	      }
+	      dataPesan.noresi = command[2];
+	      sedangPengiriman (pushAPI, dataPesan.userId, dataPesan);
+	      dataPesan.status = 2;
+	    }
+	    
+	    pushAPI.push(adminUser, [{
+	      "type": "template",
+	      "altText": "this is a carousel template",
+	      "template": {
+	        "type": "carousel",
+	        "actions": [],
+	        "columns": [
+	          {
+	            "text": "Ubah Status Pesanan",
+	            "actions": [
+	              {
+	                "type": "message",
+	                "label": "Sedang Proses",
+	                "text": "Sedang Proses"
+	              },
+	              {
+	                "type": "message",
+	                "label": "Sedang Kirim",
+	                "text": "Sedang Kirim"
+	              }
+	            ]
+	          }
+	        ]
+	      }
+	    }])
+	} else {
+		final_json = {
+		  "type": "text",
+		  "text": "Silakan pilih menu di bawah, atau ketik:\n - Belum Proses\n - Sedang Proses\n - Sedang Kirim\nuntuk melihat data pemesan."
+		}
+	}
+
+	await context.reply([
+		final_json
+	]);
+}
+
 module.exports = {
     produk: produk,
     faq: faq,
