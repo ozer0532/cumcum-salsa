@@ -42,15 +42,11 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-<<<<<<< HEAD
       //pushAPI.createRichMenu();
       //pushAPI.getRichMenuList().then(richMenus => { console.log(richMenus); }
       //pushAPI.uploadRichMenuImage(RICH_MENU_ID, fs.readFileSync('image.png'));
 	  //pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
     await menuadmin(context, daftar_pesanan, pushAPI);
-=======
-      await menuadmin(context, daftar_pesanan, pushAPI);
->>>>>>> 7a021f5bd2a1855f46b70c1210fd08f24eca43ba
     
     } else {
       if (dataPesan.step == 0 || dataPesan.step == 200) {
