@@ -20,7 +20,7 @@ const pushAPI = LineClient.connect({
   channelSecret: config.channelSecret,
 });
 
-const adminUser = "U6fed2386f03b7f753116b0874fe36c6b";
+const adminUser = "U589dac6e60813ce79d7f4bb0c94302be";
 
 // Berisi data pemesanan user
 daftar_pesanan = [];
@@ -48,7 +48,8 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-    await context.linkRichMenu(AdminConsole);
+    await context.linkRichMenu("AdminConsole");
+    console.log("ADMIN QU");
     //kodeahsjdahd
     if (context.event.message.text == "Sedang Proses") {
       
@@ -80,6 +81,7 @@ const MainHandler = new LineHandler()
       }
     }])
     } else {
+      console.log(userId);
       if (dataPesan.step == 0) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
