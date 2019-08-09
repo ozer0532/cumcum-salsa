@@ -2,8 +2,12 @@
 // Fungsi mengambil data state dari database, kemudian memproses data dan mengirimkan pesan.
 // Gunakan fungsi-fungsi tambahan dibawah untuk mempermudah pekerjaan
 
+const { randomString } = require('./randomizer.js');
+const { sudahFixed, sedangPacking, sedangPengiriman } = require('./clientpushmessage.js');
+const adminUser = "U589dac6e60813ce79d7f4bb0c94302be";
+
 let dataPesan;
-async function pesan (context, dp) {
+async function pesan (context, dp, pushAPI) {
 	dataPesan = dp;
 	if (dataPesan.step == 0) {
 		await pesanNama(context);
@@ -36,7 +40,9 @@ async function pesan (context, dp) {
 					"text": "Terima kasih telah menggunakan Line Bot Cumcum Salsa!\nDatang kembali!"
 				}
 			])
-			dataPesan.step = 0;
+			dataPesan.kode = await randomString();
+			sudahFixed(pushAPI, adminUser, dataPesan);
+			dataPesan.step = 6;
 		} else if (context.event.message.text == "Salah") {
 			await pesanRubah(context);
 			dataPesan.step++;
@@ -67,35 +73,29 @@ async function pesan (context, dp) {
 		}
 	} else if (dataPesan.step == 10) {
 		await prosesNama(context);
-		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
 	} else if (dataPesan.step == 11) {
 		await prosesJumlah(context);
-		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
 	} else if (dataPesan.step == 12) {
 		await prosesAlamat(context);
-		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
 	} else if (dataPesan.step == 13) {
 		await prosesKontak(context);
-		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
 	} else if (dataPesan.step == 14) {
 		await prosesWrap(context);
-		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
 	} else if (dataPesan.step == 15) {
 		await prosesTransfer(context);
-		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
-	} else {
+	} else if (dataPesan.step == 6) {
 		await prosesTransfer(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step++;

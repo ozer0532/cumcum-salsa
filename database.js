@@ -18,14 +18,19 @@ class Database {
 	}
 
 	log(){
-		console.log(this.userId);
-		console.log(this.nama);
-		console.log(this.jumlah);
-		console.log(this.alamat);
-		console.log(this.kontak);
-		console.log(this.wrap);
-		console.log(this.transfer);
-		console.log(this.total);
+		console.log("uid: " + this.userId);
+		console.log("nama: " + this.nama);
+		console.log("qty: " + this.jumlah);
+		console.log("alamat: " + this.alamat);
+		console.log("kontak: " + this.kontak);
+		console.log("wrap: " + this.wrap);
+		console.log("trf: " + this.transfer);
+		console.log("total: " + this.total);
+		console.log("STEP: " + this.step);
+		console.log("kode: " + this.kode);
+		console.log("status: " + this.status);
+		console.log("noresi: " + this.noresi);
+		console.log();
 	}
 }
 

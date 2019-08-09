@@ -49,68 +49,15 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-    //pushAPI.getRichMenuList().then(richMenus => {console.log(richMenus);});
-    pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
-    //kodeahsjdahd
-    let command = context.event.message.text.split(" ");
-    if (command[0] == "Proses"){
-      for(var i = 0; i < daftar_pesanan.length; i++){
-        if(daftar_pesanan[i].kode === command[1]){
-          dataPesan = daftar_pesanan[i];
-          
-          console.log("Eh ketemu, ada di list ke" + i);
-          dataPesan.log();
-        }
-      }
-      sedangPacking (pushAPI, dataPesan.userId, dataPesan);
-      dataPesan.status = 1;
-    }
-    else if (command[0] == "Kirim"){
-      for(var i = 0; i < daftar_pesanan.length; i++){
-        if(daftar_pesanan[i].kode === command[1]){
-          dataPesan = daftar_pesanan[i];
-          
-          console.log("Eh ketemu, ada di list ke" + i);
-          dataPesan.log();
-        }
-      }
-      dataPesan.noresi = command[2];
-      sedangPengiriman (pushAPI, dataPesan.userId, dataPesan);
-      dataPesan.status = 2;
-
-    }
-    //
-    pushAPI.push(adminUser, [{
-      "type": "template",
-      "altText": "this is a carousel template",
-      "template": {
-        "type": "carousel",
-        "actions": [],
-        "columns": [
-          {
-            "text": "Ubah Status Pesanan",
-            "actions": [
-              {
-                "type": "message",
-                "label": "Sedang Proses",
-                "text": "Sedang Proses"
-              },
-              {
-                "type": "message",
-                "label": "Sedang Kirim",
-                "text": "Sedang Kirim"
-              }
-            ]
-          }
-        ]
-      }
-    }])
+	  pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
+    await menuadmin(context, daftar_pesanan, pushAPI);
+    
     } else {
       console.log(userId);
       if (dataPesan.step == 0) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
-            dataPesan = await pesan(context, dataPesan);
+            dataPesan = await pesan(context, dataPesan, pushAPI);
           } else if (context.event.message.text == "Produk") {
             await produk(context);
             await context.push([menuCarousel]);
@@ -132,7 +79,7 @@ const MainHandler = new LineHandler()
       } else {
         console.log(dataPesan.nama);
         dataPesan.log();
-        dataPesan = pesan(context, dataPesan);
+        dataPesan = pesan(context, dataPesan, pushAPI);
       }
     }
   })

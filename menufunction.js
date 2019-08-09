@@ -1,5 +1,7 @@
 // Disetiap fungsi, reply pengguna dengan pesan yang sesuai :)
 // Gunakan context.reply([ListPesanJSON])
+const { sudahFixed, sedangPacking, sedangPengiriman } = require('./clientpushmessage.js');
+const { Database } = require('./database.js');
 
 async function produk (context) {
 
@@ -74,16 +76,16 @@ async function kontak (context) {
 	]);
 }
 
-async function menuadmin (context, daftar_pesanan) {
-	await context.linkRichMenu("AdminConsole");
-		
-	var action_json =
+async function menuadmin (context, daftar_pesanan, pushAPI) {
+	var adminUser = context.event.source.userId;
+	
+	var action_json_template =
 	{
       "type": "message",
       "label": "Action 1",
       "text": "Action 1"
     }
-    var column_json = 
+    var column_json_template = 
     {
       "title": "Title",
 	  "text": "Text",
@@ -100,42 +102,62 @@ async function menuadmin (context, daftar_pesanan) {
 	  }
 	}
 
+	var empty = true;
 	if (context.event.message.text == "Belum Proses") {
-		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
-			if (daftar_pesanan[i].status == 0){
-				column_json.title = dataPesan[i].nama;
-				column_json.text = dataPesan[i].jumlah + "box, akan dikirim ke " + dataPesan[i].alamat;
-				action_json.label = "Proses " + dataPesan[i].kode;
-				action_json.text = "Proses " + dataPesan[i].kode;
+		for (var i = 0; i < Math.min(10, daftar_pesanan.length); i++){
+			console.log(daftar_pesanan[i].step, daftar_pesanan[i].status);
+			if ((daftar_pesanan[i].step == 6) && (daftar_pesanan[i].status == 0)){
+				empty = false;
+				var column_json = column_json_template;
+				column_json.title = daftar_pesanan[i].nama;
+				column_json.text = daftar_pesanan[i].jumlah + "box, akan dikirim ke " + daftar_pesanan[i].alamat;
+
+				var action_json = action_json_template;
+				action_json.label = "Proses " + daftar_pesanan[i].kode;
+				action_json.text = "Proses " + daftar_pesanan[i].kode;
+				
 				column_json.actions.push(action_json);
-				final_json.columns.push(column_json);
+				final_json.template.columns.push(column_json);
 			}
 		}
 	} else if (context.event.message.text == "Sedang Proses") {
-		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
-			if (daftar_pesanan[i].status == 1){
-				column_json.title = dataPesan[i].nama;
-				column_json.text = dataPesan[i].jumlah + "box, akan dikirim ke " + dataPesan[i].alamat;
-				action_json.label = "Kirim " + dataPesan[i].kode;
-				action_json.text = "Kirim " + dataPesan[i].kode;
+		for (var i = 0; i < Math.min(10, daftar_pesanan.length); i++){
+			if ((daftar_pesanan[i].step == 6) && (daftar_pesanan[i].status == 1)){
+				empty = false;
+				var column_json = column_json_template;
+				column_json.title = daftar_pesanan[i].nama;
+				column_json.text = daftar_pesanan[i].jumlah + "box, akan dikirim ke " + daftar_pesanan[i].alamat;
+
+				var action_json = action_json_template;
+				action_json.label = "Kirim " + daftar_pesanan[i].kode;
+				action_json.text = "Kirim " + daftar_pesanan[i].kode;
+
 				column_json.actions.push(action_json);
-				final_json.columns.push(column_json);
+				final_json.template.columns.push(column_json);
 			}
 		}
 	} else if (context.event.message.text == "Sedang Kirim") {
-		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
-			if (daftar_pesanan[i].status == 2){
-				column_json.title = dataPesan[i].nama;
-				column_json.text = dataPesan[i].jumlah + "box, sedang dikirim ke " + dataPesan[i].alamat;
+		for (var i = 0; i < Math.min(10, daftar_pesanan.length); i++){
+			if ((daftar_pesanan[i].step == 6) && (daftar_pesanan[i].status == 2)){
+				empty = false;
+				var column_json = column_json_template;
+				column_json.title = daftar_pesanan[i].nama;
+				column_json.text = daftar_pesanan[i].jumlah + "box, sedang dikirim ke " + daftar_pesanan[i].alamat;
+
+				var action_json = action_json_template;
 				column_json.actions.push(action_json);
-				final_json.columns.push(column_json);
+				final_json.template.columns.push(column_json);
 			}
 		}
 	} else {
+		empty = false;
 		let command = context.event.message.text.split(" ");
+		let dataPesan = new Database(adminUser);
+		var kodeValid = false;
 	    if (command[0] == "Proses"){
 	      for(var i = 0; i < daftar_pesanan.length; i++){
 	        if(daftar_pesanan[i].kode === command[1]){
+				kodeValid = true;
 	          dataPesan = daftar_pesanan[i];
 	          
 	          console.log("Berhasil Proses. Detil Pesanan:");
@@ -146,12 +168,20 @@ async function menuadmin (context, daftar_pesanan) {
 			    "text": "Berhasil Proses."
 			  }
 	        }
-	      }
-	      sedangPacking (pushAPI, dataPesan.userId, dataPesan);
+		  }
+		  if (kodeValid){
+			  sedangPacking (pushAPI, dataPesan.userId, dataPesan);
+		  } else {
+			final_json = {
+				"type": "text",
+				"text": "Kode tidak valid."
+			}
+		  }
 	      dataPesan.status = 1;
 	    } else if (command[0] == "Kirim"){
 	      for(var i = 0; i < daftar_pesanan.length; i++){
 	        if(daftar_pesanan[i].kode === command[1]){
+				kodeValid = true;
 	          dataPesan = daftar_pesanan[i];
 	          
 	          console.log("Berhasil kirim. Detil Pesanan:");
@@ -163,43 +193,31 @@ async function menuadmin (context, daftar_pesanan) {
 			  }
 	        }
 	      }
-	      dataPesan.noresi = command[2];
-	      sedangPengiriman (pushAPI, dataPesan.userId, dataPesan);
+		  
+		  if (kodeValid){
+			  sedangPengiriman (pushAPI, dataPesan.userId, dataPesan);
+		  } else {
+			final_json = {
+				"type": "text",
+				"text": "Kode tidak valid."
+			}
+		  }
 	      dataPesan.status = 2;
-	    }
-	    
-	    pushAPI.push(adminUser, [{
-	      "type": "template",
-	      "altText": "this is a carousel template",
-	      "template": {
-	        "type": "carousel",
-	        "actions": [],
-	        "columns": [
-	          {
-	            "text": "Ubah Status Pesanan",
-	            "actions": [
-	              {
-	                "type": "message",
-	                "label": "Sedang Proses",
-	                "text": "Sedang Proses"
-	              },
-	              {
-	                "type": "message",
-	                "label": "Sedang Kirim",
-	                "text": "Sedang Kirim"
-	              }
-	            ]
-	          }
-	        ]
-	      }
-	    }])
-	} else {
-		final_json = {
-		  "type": "text",
-		  "text": "Silakan pilih menu di bawah, atau ketik:\n - Belum Proses\n - Sedang Proses\n - Sedang Kirim\nuntuk melihat data pemesan."
+	    } else {
+			final_json = {
+				"type": "text",
+				"text": "Silakan pilih menu di bawah, atau ketik:\n - Belum Proses\n - Sedang Proses\n - Sedang Kirim\nuntuk melihat data pemesan."
+			}
 		}
 	}
 
+	console.log(final_json);
+	if (empty){
+		final_json = {
+			"type": "text",
+			"text": "Kosong"
+		}
+	}
 	await context.reply([
 		final_json
 	]);
@@ -209,5 +227,6 @@ module.exports = {
     produk: produk,
     faq: faq,
     testimoni: testimoni,
-    kontak: kontak
+	kontak: kontak,
+	menuadmin: menuadmin
 }

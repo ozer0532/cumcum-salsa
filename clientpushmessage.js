@@ -1,6 +1,9 @@
 // Gunakan pushAPI.push(userID, [ListPesanJSON]) untuk mengirimkan pesan ke user tersebut
 
-async function sudahFixed (dataPesan) {
+async function sudahFixed (pushAPI, userID, dataPesan) {
+  console.log("NIH MAMAM FIX");
+  dataPesan.log();
+  console.log(userID);
 await pushAPI.push(userID, [{
     "type": "text",
     "text": "[FIXED]\nNama pemesan : " + dataPesan.nama + "\nJumlah pesanan : " + dataPesan.jumlah + "\nAlamat tujuan : " + dataPesan.alamat + "\nKontak pemesan : " + dataPesan.kontak + "\nPakai bubble wrap? : " + dataPesan.wrap + "\nHarga total : Rp " + dataPesan.total + "\nPilihan pembayaran : " + dataPesan.transfer + "\nNomor pesanan : " + dataPesan.kode
