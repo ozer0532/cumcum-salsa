@@ -34,26 +34,18 @@ const MainHandler = new LineHandler()
     for(var i = 0; i < daftar_pesanan.length; i++){
       if(daftar_pesanan[i].userId === userId){
         dataPesan = daftar_pesanan[i];
-        
-        console.log("Eh ketemu, ada di list ke" + i);
-        dataPesan.log();
       }
     }
     if (dataPesan == null){
       dataPesan = new Database(userId);
       daftar_pesanan.push(dataPesan);
-
-      console.log("Tidak ditemukan data dengan userId: " + userId);
-      console.log("Dibuat database baru dengan:");
-      dataPesan.log();
     }
     
     if (userId == adminUser) {
-	  pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
-    await menuadmin(context, daftar_pesanan, pushAPI);
+      await menuadmin(context, daftar_pesanan, pushAPI);
     
     } else {
-      if (dataPesan.step == 0 || dataPesan.step == 6) {
+      if (dataPesan.step == 0 || dataPesan.step == 200) {
         if (context.event.message.type == "text") {
           if (context.event.message.text == "Pesan") {
             dataPesan = await pesan(context, dataPesan, pushAPI);
@@ -76,12 +68,11 @@ const MainHandler = new LineHandler()
           }
         }
       } else {
-        console.log(dataPesan.nama);
-        dataPesan.log();
         dataPesan = pesan(context, dataPesan, pushAPI);
       }
     }
   })
+
   .onFollow(async context => {
     await context.push([
       {
@@ -91,10 +82,12 @@ const MainHandler = new LineHandler()
       menuCarousel
     ]);
   })
+
   .onJoin(async context => {
     await context.sendText('Terima kasih telah menggunakan Line Bot Cumcum Salsa. Untuk saat ini, bot ini tidak dapat digunakan pada grup ataupun di multi-person chat. Bot ini akan meninggalkan grup/chat ini');
     await context.leave();
   })
+  
   .onEvent(async context => {
     await context.sendText("Terima kasih telah menggunakan Line bot ini. Saat ini kami tidak dapat memproses pesan tersebut. Silahkan memilih salah satu perintah dibawah ini!");
     await context.push([menuCarousel]);
