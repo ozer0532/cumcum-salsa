@@ -56,10 +56,10 @@ async function pesan (context, dp, pushAPI) {
 
 	} else if (dataPesan.step == 7) {
 		if (context.event.message.text == "Benar") {
+			dataPesan.kode = await randomString();
 			await pesanInfoRekening(context);
 			await pesanTerimaKasih(context);
 			await pesanMenuAwal(context);
-			dataPesan.kode = await randomString();
 			sudahFixed(pushAPI, adminUser, dataPesan);
 			dataPesan.step = 200;
 		} else if (context.event.message.text == "Salah") {
@@ -222,7 +222,7 @@ async function pesanTransfer (context) {
 	},
 	{
 	  "type": "template",
-	  "altText": "Pilih rekening untuk transfer biaya pesanan kamu(BCA/BNI/BRI)",
+	  "altText": "Pilih rekening untuk transfer biaya pesanan kamu.\nBalas dengan (BCA/BNI/BRI)",
 	  "template": {
 	    "type": "carousel",
 	    "actions": [],
@@ -367,7 +367,7 @@ async function pesanInfoRekening (context) {
 }
 
 async function pesanTerimaKasih (context) {
-	await context.sendText("Terima kasih sudah berbelanja menggunakan bot ini.\nSilahkan kirim bukti foto ke CS kami.\nID Line: CSCumcumSalsa");
+	await context.sendText("Terima kasih sudah berbelanja menggunakan bot ini.\nSilahkan kirim bukti foto ke CS kami dengan format " + dataPesan.kode + "<spasi><nomor_rekening_yang_digunakan>.\nID Line: CSCumcumSalsa");
 }
 
 async function pesanMenuAwal (context) {

@@ -32,7 +32,7 @@ const MainHandler = new LineHandler()
     let userId = context.event.source.userId;
     let dataPesan = null;
     for(var i = 0; i < daftar_pesanan.length; i++){
-      if(daftar_pesanan[i].userId === userId){
+      if(daftar_pesanan[i].userId === userId && daftar_pesanan[i].step < 200){
         dataPesan = daftar_pesanan[i];
       }
     }
@@ -87,7 +87,7 @@ const MainHandler = new LineHandler()
     await context.sendText('Terima kasih telah menggunakan Line Bot Cumcum Salsa. Untuk saat ini, bot ini tidak dapat digunakan pada grup ataupun di multi-person chat. Bot ini akan meninggalkan grup/chat ini');
     await context.leave();
   })
-  
+
   .onEvent(async context => {
     await context.sendText("Terima kasih telah menggunakan Line bot ini. Saat ini kami tidak dapat memproses pesan tersebut. Silahkan memilih salah satu perintah dibawah ini!");
     await context.push([menuCarousel]);
