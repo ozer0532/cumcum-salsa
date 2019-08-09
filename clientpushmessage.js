@@ -17,7 +17,7 @@ await pushAPI.push(userID, [{
 async function sedangPengiriman (pushAPI, userID, dataPesan) {
 await pushAPI.push(userID, [{
     "type": "text",
-    "text": "Halo " + dataPesan.nama + "!\nPesanan kamu sedang dalam pengiriman.\nTerima kasih banyak telah membeli produk Cumcum Salsa."
+    "text": "Halo " + dataPesan.nama + "!\nPesanan kamu sedang dalam pengiriman.\nNomor resi pengiriman pesanan kamu adalah" + dataPesan.noresi +"\nTerima kasih banyak telah membeli produk Cumcum Salsa."
   }])
 }
 

@@ -51,8 +51,32 @@ const MainHandler = new LineHandler()
     await context.linkRichMenu("AdminConsole");
     console.log("ADMIN QU");
     //kodeahsjdahd
-    if (context.event.message.text == "Sedang Proses") {
-      
+    let command = context.event.message.text.split(" ");
+    if (command[0] == "Proses"){
+      for(var i = 0; i < daftar_pesanan.length; i++){
+        if(daftar_pesanan[i].kode === command[1]){
+          dataPesan = daftar_pesanan[i];
+          
+          console.log("Eh ketemu, ada di list ke" + i);
+          dataPesan.log();
+        }
+      }
+      sedangPacking (pushAPI, dataPesan.userId, dataPesan);
+      dataPesan.status = 1;
+    }
+    else if (command[0] == "Kirim"){
+      for(var i = 0; i < daftar_pesanan.length; i++){
+        if(daftar_pesanan[i].kode === command[1]){
+          dataPesan = daftar_pesanan[i];
+          
+          console.log("Eh ketemu, ada di list ke" + i);
+          dataPesan.log();
+        }
+      }
+      dataPesan.noresi = command[2];
+      sedangPengiriman (pushAPI, dataPesan.userId, dataPesan);
+      dataPesan.status = 2;
+
     }
     //
     pushAPI.push(adminUser, [{
