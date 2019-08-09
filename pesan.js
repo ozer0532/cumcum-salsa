@@ -12,42 +12,61 @@ async function pesan (context, dp, pushAPI) {
 	if (dataPesan.step == 0) {
 		await pesanNama(context);
 		dataPesan.step++;
+
 	} else if (dataPesan.step == 1) {
 		await prosesNama(context);
-		await pesanJumlah(context);
-		dataPesan.step++;
+		if ((dataPesan.nama.length >= 3) && (dataPesan.nama.length < 100)){
+			await pesanJumlah(context);
+			dataPesan.step++;
+		} else {
+			await context.sendText('Silahkan isi dengan nama penerima (3-100 karakter)');
+		}
+
 	} else if(dataPesan.step == 2) {
 		await prosesJumlah(context);
-		await pesanAlamat(context);
-		dataPesan.step++;
+		if (Number.isInteger(dataPesan.jumlah) && (dataPesan.jumlah > 0) && (dataPesan.jumlah <= 100)){
+			await pesanAlamat(context);
+			dataPesan.step++;
+		} else {
+			await context.sendText('Silahkan isi dengan sebuah angka antara 1-100');
+		}
+
 	} else if (dataPesan.step == 3) {
 		await prosesAlamat(context);
 		await pesanKontak(context);
 		dataPesan.step++;
+
 	} else if (dataPesan.step == 4) {
 		await prosesKontak(context);
-		await pesanWrap(context);
-		dataPesan.step++;
+		if (Number.isInteger(Number(dataPesan.kontak)) && (dataPesan.kontak.length >= 9) && dataPesan.kontak.length <= 13){
+			await pesanWrap(context);
+			dataPesan.step++;
+		} else {
+			await context.sendText('Silahkan isi dengan nomor handphone yang valid');
+		}
+
 	} else if (dataPesan.step == 5) {
 		await prosesWrap(context);
-		await pesanTransfer(context);
-		dataPesan.step++;
+		if ((dataPesan.wrap == "Ya") || (dataPesan.wrap == "Tidak")){
+			await pesanTransfer(context);
+			dataPesan.step++;
+		} else {
+			await pesanWrap(context);
+		}
+
 	} else if (dataPesan.step == 7) {
 		if (context.event.message.text == "Benar") {
-			await context.push([
-				{
-					"type": "text",
-					"text": "Terima kasih telah menggunakan Line Bot Cumcum Salsa!\nDatang kembali!"
-				}
-			])
 			dataPesan.kode = await randomString();
+			await pesanInfoRekening(context);
+			await pesanTerimaKasih(context);
+			await pesanMenuAwal(context);
 			sudahFixed(pushAPI, adminUser, dataPesan);
-			dataPesan.step = 6;
+			dataPesan.step = 200;
 		} else if (context.event.message.text == "Salah") {
 			await pesanRubah(context);
 			dataPesan.step++;
 		} else {
-			await context.sendText('Silahkan menjawab dengan "Benar" atau "Salah"')
+			await context.sendText('Silahkan menjawab dengan "Benar" atau "Salah"');
 		}
 	} else if (dataPesan.step == 8) {
 		if (context.event.message.text == "Nama") {
@@ -67,38 +86,68 @@ async function pesan (context, dp, pushAPI) {
 			dataPesan.step = 14;
 		} else if (context.event.message.text == "Transfer") {
 			await pesanTransfer(context);
-			dataPesan.step = 15;
+			dataPesan.step = 6;
 		} else {
 			await context.sendText('Silahkan menjawab dengan "Nama", "Jumlah", "Alamat", "Kontak", "Wrap", atau "Transfer"');
 		}
+
 	} else if (dataPesan.step == 10) {
 		await prosesNama(context);
-		await pesanKonfirmasi(context);
-		dataPesan.step = 7;
+		if ((dataPesan.nama.length >= 3) && (dataPesan.nama.length < 100)){
+			await pesanKonfirmasi(context);
+			dataPesan.step = 7;
+		} else {
+			await context.sendText('Silahkan isi dengan nama penerima (3-100 karakter)');
+		}
+
 	} else if (dataPesan.step == 11) {
 		await prosesJumlah(context);
-		await pesanKonfirmasi(context);
-		dataPesan.step = 7;
+		if (Number.isInteger(dataPesan.jumlah) && (dataPesan.jumlah > 0) && (dataPesan.jumlah <= 100)){
+			await pesanKonfirmasi(context);
+			dataPesan.step = 7;
+		} else {
+			await context.sendText('Silahkan isi dengan sebuah angka antara 1-100');
+		}
+
 	} else if (dataPesan.step == 12) {
 		await prosesAlamat(context);
 		await pesanKonfirmasi(context);
 		dataPesan.step = 7;
+
 	} else if (dataPesan.step == 13) {
 		await prosesKontak(context);
-		await pesanKonfirmasi(context);
-		dataPesan.step = 7;
+		if (Number.isInteger(Number(dataPesan.kontak)) && (dataPesan.kontak.length >= 9) && dataPesan.kontak.length <= 13){
+			await pesanKonfirmasi(context);
+			dataPesan.step = 7;
+		} else {
+			await context.sendText('Silahkan isi dengan nomor handphone yang valid');
+		}
+
 	} else if (dataPesan.step == 14) {
 		await prosesWrap(context);
-		await pesanKonfirmasi(context);
-		dataPesan.step = 7;
-	} else if (dataPesan.step == 15) {
-		await prosesTransfer(context);
-		await pesanKonfirmasi(context);
-		dataPesan.step = 7;
+		if ((dataPesan.wrap == "Ya") || (dataPesan.wrap == "Tidak")){
+			await pesanKonfirmasi(context);
+			dataPesan.step = 7;
+		} else {
+			await pesanWrap(context);
+		}
+
 	} else if (dataPesan.step == 6) {
 		await prosesTransfer(context);
-		await pesanKonfirmasi(context);
-		dataPesan.step++;
+		if ((dataPesan.transfer == "BCA") || (dataPesan.transfer == "BNI") || (dataPesan.transfer == "BRI")){
+			await pesanKonfirmasi(context);
+			dataPesan.step++;
+		} else {
+			await pesanTransfer(context);
+		}
+	} else if (dataPesan.step == 200) {
+		await prosesTransfer(context);
+		if ((dataPesan.transfer == "BCA") || (dataPesan.transfer == "BNI") || (dataPesan.transfer == "BRI")){
+			await pesanKonfirmasi(context);
+			dataPesan.step++;
+		} else {
+			await pesanTransfer(context);
+		}
 	}
 	return dataPesan;
 }
@@ -117,7 +166,7 @@ async function pesanJumlah (context) {
 	await context.push([
 	{
 	  "type": "text",
-	  "text": "Berapa kotak Cumcum Salsa yang kamu pesan? (Rp 35.000/kotak)"
+	  "text": "Berapa jumlah Cumcum Salsa yang ingin kamu pesan? (Harga Rp 35.000 per kotak)"
 	}
 	]);
 }
@@ -143,8 +192,24 @@ async function pesanKontak (context) {
 async function pesanWrap (context) {
 	await context.push([
 	{
-	  "type": "text",
-	  "text": "Apakah kamu mau pakai bubble wrap? (Ya/ Tidak)\nPemakaian tidak dikenakan tambahan biaya."
+	  "type": "template",
+	  "altText": "Pakai bubble wrap? (tidak ada biaya tambahan)\nBalas dengan (Ya/Tidak)",
+	  "template": {
+	    "type": "confirm",
+	    "actions": [
+	      {
+	        "type": "message",
+	        "label": "Ya",
+	        "text": "Ya"
+	      },
+	      {
+	        "type": "message",
+	        "label": "Tidak",
+	        "text": "Tidak"
+	      }
+	    ],
+	    "text": "Pakai bubble wrap? (tidak ada biaya tambahan)"
+	  }
 	}
 	]);
 }
@@ -156,10 +221,35 @@ async function pesanTransfer (context) {
 	  "text": "Untuk harga total yang harus dibayarkan adalah Rp "+ dataPesan.total +" dengan rincian:\nCumcum Salsa x "+ dataPesan.jumlah + " = Rp "+ (dataPesan.total-8000) +"\nBiaya pengiriman      = Rp 8000"
 	},
 	{
-	  "type": "text",
-	  "text": "Silahkan memilih rekening untuk mentransfer biaya pesanan kamu.\n1. BCA\n2. BNI\n3. BRI"
-	}
-	]);
+	  "type": "template",
+	  "altText": "Pilih rekening untuk transfer biaya pesanan kamu.\nBalas dengan (BCA/BNI/BRI)",
+	  "template": {
+	    "type": "carousel",
+	    "actions": [],
+	    "columns": [
+	      {
+	        "text": "Pilih rekening untuk transfer biaya pesanan kamu",
+	        "actions": [
+	          {
+	            "type": "message",
+	            "label": "BCA",
+	            "text": "BCA"
+	          },
+	          {
+	            "type": "message",
+	            "label": "BNI",
+	            "text": "BNI"
+	          },
+	          {
+	            "type": "message",
+	            "label": "BRI",
+	            "text": "BRI"
+	          }
+	        ]
+	      }
+	    ]
+	  }
+	}]);
 }
 
 async function pesanKonfirmasi (context) {
@@ -211,59 +301,85 @@ async function pesanBatal (context) {
 async function pesanRubah (context) {
 	await context.push([
 		{
-			"type": "template",
-			"altText": "Pilih salah satu bagian di bawah ini(Nama/Jumlah/Alamat)",
-			"template": {
-			  "type": "buttons",
-			  "actions": [
-				{
-				  "type": "message",
-				  "label": "Nama",
-				  "text": "Nama"
-				},
-				{
-				  "type": "message",
-				  "label": "Jumlah",
-				  "text": "Jumlah"
-				},
-				{
-				  "type": "message",
-				  "label": "Alamat",
-				  "text": "Alamat"
-				}
-			  ],
-			  "title": "Bagian mana yang ingin kamu rubah?",
-			  "text": "Pilih salah satu bagian di bawah ini"
-			}
-		  },
-		  {
-			"type": "template",
-			"altText": "Pilih salah satu bagian di bawah ini(Kontak/Wrap/Transfer)",
-			"template": {
-			  "type": "buttons",
-			  "actions": [
-				{
-				  "type": "message",
-				  "label": "Kontak",
-				  "text": "Kontak"
-				},
-				{
-				  "type": "message",
-				  "label": "Bubble Wrap",
-				  "text": "Wrap"
-				},
-				{
-				  "type": "message",
-				  "label": "Pilihan Pembayaran",
-				  "text": "Transfer"
-				}
-			  ],
-			  "title": "Bagian mana yang ingin kamu rubah?",
-			  "text": "Pilih salah satu bagian di bawah ini"
-			}
+		  "type": "template",
+		  "altText": "this is a carousel template",
+		  "template": {
+		    "type": "carousel",
+		    "actions": [],
+		    "columns": [
+		      {
+		        "title": "Bagian mana yang ingin kamu ubah?",
+		        "text": "Pilih salah satu bagian di bawah ini",
+		        "actions": [
+		          {
+		            "type": "message",
+		            "label": "Nama",
+		            "text": "Nama"
+		          },
+		          {
+		            "type": "message",
+		            "label": "Jumlah",
+		            "text": "Jumlah"
+		          },
+		          {
+		            "type": "message",
+		            "label": "Alamat",
+		            "text": "Alamat"
+		          }
+		        ]
+		      },
+		      {
+		        "title": "Bagian mana yang ingin kamu ubah?",
+		        "text": "Pilih salah satu bagian di bawah ini",
+		        "actions": [
+		          {
+		            "type": "message",
+		            "label": "Kontak",
+		            "text": "Kontak"
+		          },
+		          {
+		            "type": "message",
+		            "label": "Bubble Wrap",
+		            "text": "Wrap"
+		          },
+		          {
+		            "type": "message",
+		            "label": "Pilihan Pembayaran",
+		            "text": "Transfer"
+		          }
+		        ]
+		      }
+		    ]
 		  }
+		 }
 	]);
 }
+
+async function pesanInfoRekening (context) {
+	await context.sendText("Silakan transfer sejumlah Rp " + dataPesan.total + " ke nomor rekening di bawah ini:");
+	if (dataPesan.transfer == "BCA"){
+		await context.sendText("BCA 777777777 a.n. UD Salam Sayang");
+	} else if (dataPesan.transfer == "BNI"){
+		await context.sendText("BNI 555555555 a.n. UD Salam Sayang");
+	} else {
+		await context.sendText("BRI 333333333 a.n. UD Salam Sayang");
+	}
+}
+
+async function pesanTerimaKasih (context) {
+	await context.sendText("Terima kasih sudah berbelanja menggunakan bot ini.\nSilahkan kirim bukti foto ke CS kami dengan format " + dataPesan.kode + "<spasi><nomor_rekening_yang_digunakan>.\nID Line: CSCumcumSalsa");
+}
+
+async function pesanMenuAwal (context) {
+	await context.push([
+      {
+        "type": "text",
+        "text": "Haloo! Selamat datang di Line Bot Cumcum Salsa!\nSilahkan menggunakan layanan yang kami sediakan di bot ini dengan cara mengklik salah satu menu di bawah.\n\nKamu dapat mengetik \"Menu\" tanpa tanda petik untuk melihat pesan ini lagi."
+      },
+      menuCarousel
+    ]);
+}
+		
 
 // Semua fungsi yang berhubungan dengan pemrosesan input
 async function prosesNama (context) {
@@ -271,7 +387,7 @@ async function prosesNama (context) {
 }
 
 async function prosesJumlah (context) {
-	dataPesan.jumlah = context.event.message.text;
+	dataPesan.jumlah = Number(context.event.message.text);
 	dataPesan.total = 35000*dataPesan.jumlah + 8000;
 }
 
@@ -291,14 +407,278 @@ async function prosesTransfer (context) {
 	dataPesan.transfer = context.event.message.text;
 }
 
-async function prosesKonfirmasiBenar (context) {
-
-}
-
-async function prosesKonfirmasiSalah (context) {
-
-}
-
 module.exports = {
     pesan: pesan
+}
+
+// Daftar pesan yang dapat dikirim
+const menuCarousel = {
+  "type": "flex",
+  "altText": "Flex Message",
+  "contents": {
+    "type": "carousel",
+    "contents": [
+      {
+        "type": "bubble",
+        "direction": "ltr",
+        "hero": {
+          "type": "image",
+          "url": "https://i.imgur.com/BMaCDdl.jpg",
+          "align": "center",
+          "gravity": "top",
+          "size": "full",
+          "aspectRatio": "16:9",
+          "aspectMode": "cover",
+          "backgroundColor": "#FFFFFF"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "Pesan",
+              "size": "xxl",
+              "align": "center",
+              "weight": "bold",
+              "color": "#000000"
+            },
+            {
+              "type": "text",
+              "text": "Untuk memesan produk Cumcum Salsa",
+              "size": "md",
+              "align": "center",
+              "gravity": "top",
+              "weight": "regular",
+              "wrap": true
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "Pesan",
+                "text": "Pesan"
+              },
+              "color": "#DFAD14",
+              "style": "primary"
+            }
+          ]
+        }
+      },
+      {
+        "type": "bubble",
+        "direction": "ltr",
+        "hero": {
+          "type": "image",
+          "url": "https://i.imgur.com/PPY2PfZ.jpg",
+          "align": "center",
+          "gravity": "top",
+          "size": "full",
+          "aspectRatio": "16:9",
+          "aspectMode": "cover",
+          "backgroundColor": "#FFFFFF"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "Produk",
+              "size": "xxl",
+              "align": "center",
+              "weight": "bold",
+              "color": "#000000"
+            },
+            {
+              "type": "text",
+              "text": "Untuk melihat produk Cumcum Salsa",
+              "size": "md",
+              "align": "center",
+              "gravity": "top",
+              "wrap": true
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "Produk",
+                "text": "Produk"
+              },
+              "color": "#DFAD14",
+              "style": "primary"
+            }
+          ]
+        }
+      },
+      {
+        "type": "bubble",
+        "direction": "ltr",
+        "hero": {
+          "type": "image",
+          "url": "https://i.imgur.com/HOX2vmO.jpg",
+          "align": "center",
+          "gravity": "top",
+          "size": "full",
+          "aspectRatio": "16:9",
+          "aspectMode": "cover",
+          "backgroundColor": "#FFFFFF"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "FAQ",
+              "size": "xxl",
+              "align": "center",
+              "weight": "bold",
+              "color": "#000000"
+            },
+            {
+              "type": "text",
+              "text": "Untuk melihat pertanyaan yang sering ditanyakan",
+              "size": "md",
+              "align": "center",
+              "gravity": "top",
+              "wrap": true
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "FAQ",
+                "text": "FAQ"
+              },
+              "color": "#DFAD14",
+              "style": "primary"
+            }
+          ]
+        }
+      },
+      {
+        "type": "bubble",
+        "direction": "ltr",
+        "hero": {
+          "type": "image",
+          "url": "https://i.imgur.com/fTxiqmF.jpg",
+          "align": "center",
+          "gravity": "top",
+          "size": "full",
+          "aspectRatio": "16:9",
+          "aspectMode": "cover",
+          "backgroundColor": "#FFFFFF"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "Testimoni",
+              "size": "xxl",
+              "align": "center",
+              "weight": "bold",
+              "color": "#000000"
+            },
+            {
+              "type": "text",
+              "text": "Untuk melihat testimoni pelanggan yang puas dengan produk Cumcum Salsa",
+              "size": "md",
+              "align": "center",
+              "gravity": "top",
+              "wrap": true
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "Testimoni",
+                "text": "Testimoni"
+              },
+              "color": "#DFAD14",
+              "style": "primary"
+            }
+          ]
+        }
+      },
+      {
+        "type": "bubble",
+        "direction": "ltr",
+        "hero": {
+          "type": "image",
+          "url": "https://i.imgur.com/xwmCfFN.jpg",
+          "align": "center",
+          "gravity": "top",
+          "size": "full",
+          "aspectRatio": "16:9",
+          "aspectMode": "cover",
+          "backgroundColor": "#FFFFFF"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "Kontak",
+              "size": "xxl",
+              "align": "center",
+              "weight": "bold",
+              "color": "#000000"
+            },
+            {
+              "type": "text",
+              "text": "Untuk mengontak langsung Customer Service CumcumSalsa",
+              "size": "md",
+              "align": "center",
+              "gravity": "top",
+              "wrap": true
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "Kontak",
+                "text": "Kontak"
+              },
+              "color": "#DFAD14",
+              "style": "primary"
+            }
+          ]
+        }
+      }
+    ]
+  }
 }

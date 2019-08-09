@@ -106,46 +106,59 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 	if (context.event.message.text == "Belum Proses") {
 		for (var i = 0; i < Math.min(10, daftar_pesanan.length); i++){
 			console.log(daftar_pesanan[i].step, daftar_pesanan[i].status);
-			if ((daftar_pesanan[i].step == 6) && (daftar_pesanan[i].status == 0)){
+			if ((daftar_pesanan[i].step == 200) && (daftar_pesanan[i].status == 0)){
 				empty = false;
-				var column_json = column_json_template;
+				var column_json = JSON.parse(JSON.stringify(column_json_template));
 				column_json.title = daftar_pesanan[i].nama;
 				column_json.text = daftar_pesanan[i].jumlah + " kotak, akan dikirim ke " + daftar_pesanan[i].alamat;
 
-				var action_json = action_json_template;
-				action_json.label = "Proses";
-				action_json.text = "Proses " + daftar_pesanan[i].kode;
-				
-				column_json.actions.push(action_json);
+				var action_json_proses = JSON.parse(JSON.stringify(action_json_template));
+				action_json_proses.label = "Proses";
+				action_json_proses.text = "Proses " + daftar_pesanan[i].kode;
+				column_json.actions.push(action_json_proses);
+
+				var action_json_cek = JSON.parse(JSON.stringify(action_json_template));
+				action_json_cek.label = "Cek Detil Pesanan";
+				action_json_cek.text = "Cek " + daftar_pesanan[i].kode;
+				column_json.actions.push(action_json_cek);
+
 				final_json.template.columns.push(column_json);
 			}
 		}
 	} else if (context.event.message.text == "Sedang Proses") {
 		for (var i = 0; i < Math.min(10, daftar_pesanan.length); i++){
-			if ((daftar_pesanan[i].step == 6) && (daftar_pesanan[i].status == 1)){
+			if ((daftar_pesanan[i].step == 200) && (daftar_pesanan[i].status == 1)){
 				empty = false;
-				var column_json = column_json_template;
+				var column_json = JSON.parse(JSON.stringify(column_json_template));
 				column_json.title = daftar_pesanan[i].nama;
 				column_json.text = daftar_pesanan[i].jumlah + " kotak, akan dikirim ke " + daftar_pesanan[i].alamat;
 
-				var action_json = action_json_template;
-				action_json.label = "Kirim";
-				action_json.text = "Kirim " + daftar_pesanan[i].kode;
+				var action_json_kirim = JSON.parse(JSON.stringify(action_json_template));
+				action_json_kirim.label = "Kirim";
+				action_json_kirim.text = "Kirim " + daftar_pesanan[i].kode;
+				column_json.actions.push(action_json_kirim);
 
-				column_json.actions.push(action_json);
+				var action_json_cek = JSON.parse(JSON.stringify(action_json_template));
+				action_json_cek.label = "Cek Detil Pesanan";
+				action_json_cek.text = "Cek " + daftar_pesanan[i].kode;
+				column_json.actions.push(action_json_cek);
+
 				final_json.template.columns.push(column_json);
 			}
 		}
 	} else if (context.event.message.text == "Sedang Kirim") {
 		for (var i = 0; i < Math.min(10, daftar_pesanan.length); i++){
-			if ((daftar_pesanan[i].step == 6) && (daftar_pesanan[i].status == 2)){
+			if ((daftar_pesanan[i].step == 200) && (daftar_pesanan[i].status == 2)){
 				empty = false;
-				var column_json = column_json_template;
+				var column_json = JSON.parse(JSON.stringify(column_json_template));
 				column_json.title = daftar_pesanan[i].nama;
 				column_json.text = daftar_pesanan[i].jumlah + " kotak, sedang dikirim ke " + daftar_pesanan[i].alamat;
 
-				var action_json = action_json_template;
-				column_json.actions.push(action_json);
+				var action_json_cek = JSON.parse(JSON.stringify(action_json_template));
+				action_json_cek.label = "Cek Detil Pesanan";
+				action_json_cek.text = "Cek " + daftar_pesanan[i].kode;
+				column_json.actions.push(action_json_cek);
+
 				final_json.template.columns.push(column_json);
 			}
 		}
@@ -159,9 +172,6 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 	        if(daftar_pesanan[i].kode === command[1]){
 				kodeValid = true;
 	          dataPesan = daftar_pesanan[i];
-	          
-	          console.log("Berhasil Proses. Detil Pesanan:");
-	          dataPesan.log();
 
 	          final_json = {
 			    "type": "text",
@@ -183,9 +193,6 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 	        if(daftar_pesanan[i].kode === command[1]){
 				kodeValid = true;
 	          dataPesan = daftar_pesanan[i];
-	          
-	          console.log("Berhasil kirim. Detil Pesanan:");
-	          dataPesan.log();
 
 	          final_json = {
 			    "type": "text",
@@ -203,7 +210,30 @@ async function menuadmin (context, daftar_pesanan, pushAPI) {
 			}
 		  }
 	      dataPesan.status = 2;
-	    } else {
+	    } else if (command[0] == "Cek") {
+	    	for(var i = 0; i < daftar_pesanan.length; i++){
+	      		if(daftar_pesanan[i].kode === command[1]){
+					kodeValid = true;
+	          		dataPesan = daftar_pesanan[i];
+
+			        await context.sendText("Nama pemesan : " + dataPesan.nama + "\nJumlah pesanan : " + dataPesan.jumlah + "\nAlamat tujuan : " + dataPesan.alamat + "\nKontak pemesan : " + dataPesan.kontak + "\nPakai bubble wrap? : " + dataPesan.wrap + "\nHarga total : Rp " + dataPesan.total + "\nPilihan pembayaran : " + dataPesan.transfer + "\nNomor pesanan : " + dataPesan.kode);
+
+			        final_json = {
+						"type": "text",
+					    "text": "Berhasil Cek."
+					}
+				}
+	        }
+	        if (kodeValid){
+			  	
+		  	} else {
+				final_json = {
+					"type": "text",
+					"text": "Kode tidak valid."
+				}
+		  	}
+
+	      } else {
 			final_json = {
 				"type": "template",
 				"altText": "this is a carousel template",
