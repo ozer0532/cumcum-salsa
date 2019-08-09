@@ -49,7 +49,10 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-	  pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
+      //pushAPI.createRichMenu();
+      //pushAPI.getRichMenuList().then(richMenus => { console.log(richMenus); }
+      //pushAPI.uploadRichMenuImage(RICH_MENU_ID, fs.readFileSync('image.png'));
+	  //pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
     await menuadmin(context, daftar_pesanan, pushAPI);
     
     } else {
