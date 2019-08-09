@@ -48,7 +48,36 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-
+    //kodeahsjdahd
+    if (context.event.message.text == "Sedang Proses") {
+      
+    }
+    //
+    pushAPI.push(adminUser, [{
+      "type": "template",
+      "altText": "this is a carousel template",
+      "template": {
+        "type": "carousel",
+        "actions": [],
+        "columns": [
+          {
+            "text": "Ubah Status Pesanan",
+            "actions": [
+              {
+                "type": "message",
+                "label": "Sedang Proses",
+                "text": "Sedang Proses"
+              },
+              {
+                "type": "message",
+                "label": "Sedang Kirim",
+                "text": "Sedang Kirim"
+              }
+            ]
+          }
+        ]
+      }
+    }])
     } else {
       if (dataPesan.step == 0) {
         if (context.event.message.type == "text") {
