@@ -20,6 +20,7 @@ const pushAPI = LineClient.connect({
   channelSecret: config.channelSecret,
 });
 
+const fs = require('fs');
 const adminUser = "U589dac6e60813ce79d7f4bb0c94302be";
 
 // Berisi data pemesanan user
@@ -48,8 +49,8 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-    await context.linkRichMenu("AdminConsole");
-    console.log("ADMIN QU");
+    //pushAPI.getRichMenuList().then(richMenus => {console.log(richMenus);});
+    pushAPI.linkRichMenu(adminUser, 'richmenu-ec64e05347913394be81a28c74b95464');
     //kodeahsjdahd
     let command = context.event.message.text.split(" ");
     if (command[0] == "Proses"){
