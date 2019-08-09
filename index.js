@@ -5,7 +5,7 @@ const { Line, LineClient } = require('messaging-api-line');
 
 const config = require('./bottender.config.js').line;
 
-const { produk, faq, testimoni, kontak } = require('./menufunction.js');
+const { produk, faq, testimoni, kontak, menuadmin } = require('./menufunction.js');
 const { sudahFixed, sedangPacking, sedangPengiriman } = require('./clientpushmessage.js');
 const { pesan } = require('./pesan.js');
 const { randomString } = require('./randomizer.js');
@@ -48,7 +48,7 @@ const MainHandler = new LineHandler()
     }
     
     if (userId == adminUser) {
-
+      await menuadmin(context, daftar_pesanan);
     } else {
       if (dataPesan.step == 0) {
         if (context.event.message.type == "text") {

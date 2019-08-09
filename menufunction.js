@@ -74,6 +74,115 @@ async function kontak (context) {
 	]);
 }
 
+async function menuadmin (context, daftar_pesanan) {
+	await showRichMenu(context);
+		
+	var action_json =
+	{
+      "type": "message",
+      "label": "Action 1",
+      "text": "Action 1"
+    }
+    var column_json = 
+    {
+      "title": "Title",
+	  "text": "Text",
+	  "actions": []
+    }
+	var final_json =
+	{
+	  "type": "template",
+	  "altText": "this is a carousel template",
+	  "template": {
+	    "type": "carousel",
+	    "actions": [],
+	    "columns": []
+	  }
+	}
+
+	if (context.event.message.text == "Belum Proses") {
+		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
+			if (daftar_pesanan[i].status == 0){
+				column_json.title = dataPesan[i].nama;
+				column_json.text = dataPesan[i].jumlah + "box, akan dikirim ke " + dataPesan[i].alamat;
+				action_json.label = "Proses Barang";
+				action_json.text = "Proses Barang";
+				column_json.actions.push(action_json);
+				final_json.columns.push(column_json);
+			}
+		}
+	} else if (context.event.message.text == "Sedang Proses") {
+		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
+			if (daftar_pesanan[i].status == 1){
+				column_json.title = dataPesan[i].nama;
+				column_json.text = dataPesan[i].jumlah + "box, akan dikirim ke " + dataPesan[i].alamat;
+				action_json.label = "Kirim Barang";
+				action_json.text = "Kirim Barang";
+				column_json.actions.push(action_json);
+				final_json.columns.push(column_json);
+			}
+		}
+	} else if (context.event.message.text == "Sedang Kirim") {
+		for (var i = 0; i < min(10, daftar_pesanan.length); i++){
+			if (daftar_pesanan[i].status == 2){
+				column_json.title = dataPesan[i].nama;
+				column_json.text = dataPesan[i].jumlah + "box, sedang dikirim ke " + dataPesan[i].alamat;
+				column_json.actions.push(action_json);
+				final_json.columns.push(column_json);
+			}
+		}
+	} else {
+		final_json = {
+		  "type": "text",
+		  "text": "Silakan pilih menu di bawah, atau ketik:\n - Belum Proses\n - Sedang Proses\n - Sedang Kirim\nuntuk melihat data pemesan."
+		}
+	}
+
+	await context.reply([
+		final_json
+	]);
+}
+
+async function showRichMenu (context) {
+	await context.reply([
+		{
+		  "size": {
+		    "width": 2500,
+		    "height": 843
+		  },
+		  "selected": true,
+		  "name": "AdminConsole",
+		  "chatBarText": "Bulletin",
+		  "areas": [
+		    {
+		      "bounds": {
+		        "x": 13,
+		        "y": 13,
+		        "width": 1216,
+		        "height": 1220
+		      },
+		      "action": {
+		        "type": "message",
+		        "text": "Sedang Proses"
+		      }
+		    },
+		    {
+		      "bounds": {
+		        "x": 1271,
+		        "y": 17,
+		        "width": 1212,
+		        "height": 1203
+		      },
+		      "action": {
+		        "type": "message",
+		        "text": "Sedang Kirim"
+		      }
+		    }
+		  ]
+		}
+	]);
+}
+
 module.exports = {
     produk: produk,
     faq: faq,
