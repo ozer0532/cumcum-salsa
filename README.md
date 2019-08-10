@@ -42,7 +42,7 @@ unzip ngrok.zip and taruh di folder bot
 ````
 Install Github Desktop / Git Bash
 ````
-1. run GitHubDesktopSetup.exe or Git-2.22.0-64-bit.exe
+1. run GitHubDesktopSetup.exe atau Git-2.22.0-64-bit.exe
 2. clone repository ini (https://github.com/ozer0532/cumcum-salsa.git) ke local storage
 ````
 
